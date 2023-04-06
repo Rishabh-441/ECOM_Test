@@ -1,0 +1,55 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card" style="width: 22rem;">
+            <img class="card-img-top" src="<%= product.img %>" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title"><%= product.name %></h5>
+                <p class="card-text"><%= product.desc %></p>
+                <h5 class="card-title">$<%= product.price %></h5>
+                <div class="btn-grp" style="display: flex; align-items: center; justify-content: space-between;">
+                    <a href="/products/<%= product._id %>" class="btn btn-success">Buy now</a>
+                    <a href="" class="btn btn-secondary btn-sm">Add To Cart</a>
+                    <a href="/products/<%= product._id %>/edit" class="btn btn-info btn-sm">Edit</a>
+                    <form action="/products/<%= product._id %>?_method=DELETE" method="post">
+                        <button class="btn btn-secondary btn-sm btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+          </div>
+    </div>
+    <div class="col-lg-6">
+        <h1 class="display-6">Leave Your Review</h1>
+        <form action="/products/<%= product._id %>/review" method="post">
+            <div class="mb-3">
+                <label class="form-label" for="rating">Rating</label>
+                <input class="form-control" type="range" name="rating" min="0" max="5">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="desc">Description</label>
+                <textarea class="form-control" name="comment" id="desc" cols="30" ></textarea>
+            </div>
+            <button class="btn btn-success btn-sm">Submit</button>
+        </form>
+        <div class="my-3">
+            <% for (let review of product.reviews) { %>
+                <div class="card">
+                    <h5 class="card-header">
+                      Rating : 
+                      <% for (let i = 0; i < review.rating; i++)  {%>
+                        ⭐
+                    <% } %>
+                    </h5>
+                    <div class="card-body">
+                      <p class="card-text"><%= review.comment %></p>
+                      <% if (review.createdAt) {%>
+                        <p><%= review.createdAt.toDateString() %></p>
+                    <% } %>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </div>
+                  </div>
+            <% } %>
+        </div>
+    </div>
+</div>
